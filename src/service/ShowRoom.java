@@ -1,56 +1,55 @@
 import java.util.*;
 
-public class Main {
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        ShowroomService service = new ShowroomService();
+class ShowroomService {
+    ArrayList<Car> cars = new ArrayList<>();
+    ArrayList<Rental> rentals = new ArrayList<>();
 
-        // Sample data
-        service.addCar(new Car(1, "Toyota", "Fortuner", 3000));
-        service.addCar(new Car(2, "BMW", "X5", 7000));
+    void addCar(Car car) {
+        cars.add(car);
+    }
 
-        while (true) {
-            System.out.println("\n--- Car Showroom System ---");
-            System.out.println("1. View Cars");
-            System.out.println("2. Rent Car");
-            System.out.println("3. Return Car");
-            System.out.println("4. Search Car");
-            System.out.println("5. Exit");
+    void displayCars() {
+        for (Car c : cars) {
+            c.displayCar();
+        }
+    }
 
-            int choice = sc.nextInt();
+    Car getCarById(int id) {
+        for (Car c : cars) {
+            if (c.id == id) return c;
+        }
+        return null;
+    }
 
-            switch (choice) {
-                case 1:
-                    service.displayCars();
-                    break;
+    void rentCar(int id, Customer customer, int days) {
+        Car car = getCarById(id);
 
-                case 2:
-                    System.out.print("Enter Car ID: ");
-                    int id = sc.nextInt();
-                    sc.nextLine();
+        if (car != null && car.isAvailable) {
+            car.isAvailable = false;
+            Rental rental = new Rental(car, customer, days);
+            rentals.add(rental);
 
-                    System.out.print("Enter Name: ");
-                    String name = sc.nextLine();
+            System.out.println("Car rented!");
+            System.out.println("Cost: ₹" + rental.calculateCost());
+        } else {
+            System.out.println("Car not available!");
+        }
+    }
 
-                    System.out.print("Enter Days: ");
-                    int days = sc.nextInt();
+    void returnCar(int id) {
+        Car car = getCarById(id);
 
-                    service.rentCar(id, new Customer(1, name), days);
-                    break;
+        if (car != null) {
+            car.isAvailable = true;
+            System.out.println("Car returned!");
+        }
+    }
 
-                case 3:
-                    System.out.print("Enter Car ID: ");
-                    service.returnCar(sc.nextInt());
-                    break;
-
-                case 4:
-                    sc.nextLine();
-                    System.out.print("Enter Brand: ");
-                    service.searchCar(sc.nextLine());
-                    break;
-
-                case 5:
-                    System.exit(0);
+  
+    void searchCar(String brand) {
+        for (Car c : cars) {
+            if (c.brand.equalsIgnoreCase(brand)) {
+                c.displayCar();
             }
         }
     }
