@@ -1,4 +1,4 @@
-class Rental {
+public class Rental {
     Car car;
     Customer customer;
     int days;

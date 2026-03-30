@@ -1,6 +1,6 @@
 import java.util.*;
 
-class ShowroomService {
+public class ShowroomService {
     ArrayList<Car> cars = new ArrayList<>();
     ArrayList<Rental> rentals = new ArrayList<>();
 
